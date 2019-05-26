@@ -1,0 +1,17 @@
+关于 Zipkin 的服务端，在使用 Spring Boot 2.x 版本后，
+官方就不推荐自行定制编译了，
+反而是直接提供了编译好的 jar 包来给我们使用，
+详情请看 upgrade to Spring Boot 2.0 NoClassDefFoundError UndertowEmbeddedServletContainerFactory · Issue #1962 · openzipkin/zipkin · GitHub
+
+这里推荐docker
+docker run -d -p 9411:9411 openzipkin/zipkin
+然后在每个客户端中的yml文件中加如下配置
+spring:
+  sleuth:
+      web:
+        client:
+          enabled: true
+      sampler:
+        probability: 1.0 # 将采样比例设置为 1.0，也就是全部都需要。默认是 0.1
+  zipkin:
+      base-url: http://localhost:9411/ # 指定了 Zipkin 服务器的地址

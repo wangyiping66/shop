@@ -1,0 +1,55 @@
+server:
+  port: 9083
+spring:
+  application:
+    name: shop-feign-server
+  datasource:
+    url: jdbc:mysql://localhost:3306/test1?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  sleuth:
+      web:
+        client:
+          enabled: true
+      sampler:
+        probability: 1.0 # 将采样比例设置为 1.0，也就是全部都需要。默认是 0.1
+  zipkin:
+      base-url: http://localhost:9411/ # 指定了 Zipkin 服务器的地址
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9080/eureka/
+    #fetch-registry: false
+  instance:
+    prefer-ip-address: true
+
+ribbon:
+  ReadTimeout: 1000
+  ConnectTimeout: 1000
+  MaxAutoRetries: 3 # 重试相同实例
+  MaxAutoRetriesNextServer: 0 # 重试下一实例
+  eureka:
+    enabled: true
+hystrix:
+  command:
+    default:  #default全局有效，service id指定应用有效
+    execution:
+        timeout:
+          #是否开启超时熔断
+          enabled: false
+        isolation:
+          thread:
+            timeoutInMilliseconds: 500 #断路器超时时间，默认1000ms
+
+
+
+
+
+
